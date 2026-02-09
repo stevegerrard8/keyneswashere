@@ -2,40 +2,68 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Finance Empire: Pro Trader</title>
+    <title>Borsa_Piyasaları_Analizi - Vikipedi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <div class="stats-grid">
-            <div class="stat-box">Nakit: <br><span id="balance">100.00</span> $</div>
-            <div class="stat-box">Portföy: <br><span id="portfolio-val">0.00</span> $</div>
-            <div class="stat-box">Kâr/Zarar: <br><span id="profit-loss">0.00</span> %</div>
+    <div id="mw-navigation">
+        <div class="wiki-logo-area">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo-v2-tr.png" width="80">
+            <p>VLOO-CUP</p>
+        </div>
+        <ul>
+            <li><a href="#">Ana Sayfa</a></li>
+            <li><a href="#">Portföyüm</a></li>
+            <li><a href="#">Sektör Analizi</a></li>
+        </ul>
+    </div>
+
+    <div id="content">
+        <div id="user-bar">
+            <span>Kullanıcı: <b>Spekülatör_01</b></span> | 
+            <span>Cüzdan: <b id="balance">100.00</b> USD</span> | 
+            <span>Portföy: <b id="port-val">0.00</b> USD</span>
         </div>
 
-        <div id="market-section">
-            <h3 class="section-title">Canlı Borsa</h3>
-            <div id="stocks-list"></div>
-        </div>
+        <h1 id="firstHeading">Küresel Hisse Senedi Piyasası</h1>
+        
+        <div id="bodyContent">
+            <p>Aşağıdaki tablo, güncel piyasa verilerini ve yatırım yapılabilir varlıkları listeler. Finansal okuryazarlık problemlerini çözmek, kâr marjınızı doğrudan etkiler.</p>
 
-        <div class="cash-control">
-            <input type="number" id="withdraw-amount" placeholder="Çekilecek Tutar">
-            <button onclick="withdrawCash()" class="btn-action">Nakit Çek ve Sektör Gör</button>
-        </div>
+            <table class="wikitable">
+                <thead>
+                    <tr>
+                        <th>Hisse Adı</th>
+                        <th>Birim Fiyat</th>
+                        <th>Değişim</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="market-body">
+                    </tbody>
+            </table>
 
-        <div id="sector-overlay" class="hidden">
-            <div class="modal-content">
-                <h2>Sektör Seçimi</h2>
-                <p>Nakit varlığınızla bir sektöre giriş yapın:</p>
-                <div class="sector-btns">
-                    <button onclick="selectSector('Gayrimenkul')">Gayrimenkul Yatırımı</button>
-                    <button onclick="selectSector('Kripto')">Kripto Maden Çiftliği</button>
-                    <button onclick="selectSector('Sanayi')">Fabrika Kur</button>
-                </div>
-                <button onclick="closeModal()" class="btn-close">Geri Dön</button>
+            <hr>
+
+            <div class="action-section">
+                <h3>Sektörel Geçiş ve Nakit Yönetimi</h3>
+                <p>Mevcut nakit bakiyenizden çekmek istediğiniz tutarı giriniz:</p>
+                <input type="number" id="withdraw-input" placeholder="0.00">
+                <button onclick="handleWithdraw()">Sektör Seçeneklerini Görüntüle</button>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <div id="sector-overlay" class="hidden">
+        <div class="wiki-modal">
+            <h2>Kritik Karar: Sektörel Uzmanlaşma</h2>
+            <p>Çektiğiniz bakiye ile yalnızca bir (1) sektöre giriş yapabilirsiniz. Bu işlem geri alınamaz.</p>
+            <div class="sector-list">
+                <button onclick="finalizeSector('Enerji')">Enerji Sanayii</button>
+                <button onclick="finalizeSector('Teknoloji')">Yazılım Ar-Ge</button>
+                <button onclick="finalizeSector('Tarım')">Sürdürülebilir Tarım</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
