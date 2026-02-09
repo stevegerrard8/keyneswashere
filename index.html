@@ -2,69 +2,57 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Borsa_Analizi_v2026</title>
+    <title>Sermaye_Yonetimi_Sistemi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="top-nav">
-        Dosya | Giriş | Ekle | Sayfa Düzeni | Formüller
+    <div class="nav-links">
+        Dosya | İşlemler | Görünüm | Geçmiş | Yardım
     </div>
-    
-    <div class="main-layout">
-        <div class="side-menu">
-            <p><b>Gezinti</b></p>
-            <ul>
-                <li><a href="#">Anasayfa</a></li>
-                <li><a href="#">Portföy Verileri</a></li>
-                <li><a href="#">Hisse Geçmişi</a></li>
+
+    <div class="main-content">
+        <h1>Borsa ve Yatırım Portföyü</h1>
+        
+        <div class="stats-line">
+            <b>Mevcut Nakit:</b> <span id="balance">100.00</span> $ | 
+            <b>Hisse Değeri:</b> <span id="port-val">0.00</span> $ |
+            <b>Net Durum:</b> <span id="profit-loss">0.00</span> %
+        </div>
+
+        <p>Aşağıdaki tabloda aktif işlem gören hisseler yer almaktadır. Problemleri çözmek çarpanınızı artırır.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Sembol</th>
+                    <th>Fiyat</th>
+                    <th>Değişim</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody id="market-list"></tbody>
+        </table>
+
+        <div class="management-zone">
+            <h3>Nakit Çekme ve Sektörel Tercih</h3>
+            <p>Sektör seçimi için çekilecek tutarı girin:</p>
+            <input type="number" id="cash-input" value="0">
+            <button onclick="processWithdraw()">Onayla ve Seçenekleri Gör</button>
+        </div>
+    </div>
+
+    <div id="overlay" class="hidden">
+        <div class="decision-box">
+            <h2>Sektör Belirleme</h2>
+            <p>Çektiğiniz tutarla hangi alana yatırım yapacaksınız?</p>
+            <ul class="decision-list">
+                <li><a href="#" onclick="pick('Gayrimenkul')">Gayrimenkul Sektörü</a></li>
+                <li><a href="#" onclick="pick('Sanayi')">Ağır Sanayi</a></li>
+                <li><a href="#" onclick="pick('Teknoloji')">Yazılım ve Yapay Zeka</a></li>
             </ul>
         </div>
-
-        <div class="content-area">
-            <h1 class="page-title">Piyasa Endeksi ve Sermaye Yönetimi</h1>
-            
-            <div class="user-stats">
-                Nakit: <span id="balance">100.00</span> $ | 
-                Hisse Değeri: <span id="port-val">0.00</span> $ |
-                <span id="pl-label">K/Z:</span> <span id="profit-loss">0.00</span> %
-            </div>
-
-            <p>Aşağıdaki hisseler üzerinden alım-satım gerçekleştirebilirsiniz. "Para Çek" fonksiyonu sektörel geçişi tetikler.</p>
-
-            <table class="classic-table">
-                <thead>
-                    <tr>
-                        <th>Hisse Sembolü</th>
-                        <th>Fiyat ($)</th>
-                        <th>Değişim (%)</th>
-                        <th>İşlem</th>
-                    </tr>
-                </thead>
-                <tbody id="market-data">
-                    </tbody>
-            </table>
-
-            <div class="withdraw-zone">
-                <hr>
-                <input type="number" id="withdraw-amt" placeholder="Tutar girin...">
-                <button onclick="requestWithdraw()">Nakit Çek ve Sektör Seç</button>
-            </div>
-        </div>
     </div>
 
-    <div id="sector-overlay" class="hidden">
-        <div class="sector-box">
-            <h3>Bir Yatırım Sektörü Belirleyin</h3>
-            <p>Bu seçimden sonra borsa dışı kazançlarınız bu alana bağlanacaktır:</p>
-            <ul>
-                <li><a href="#" onclick="finalizeSector('Emlak')">> Gayrimenkul ve Konut</a></li>
-                <li><a href="#" onclick="finalizeSector('Teknoloji')">> Yazılım ve Bilişim</a></li>
-                <li><a href="#" onclick="finalizeSector('Tarım')">> Endüstriyel Tarım</a></li>
-            </ul>
-            <br>
-            <button onclick="closeSectors()">Vazgeç</button>
-        </div>
-    </div>
     <script src="script.js"></script>
 </body>
 </html>
