@@ -1,10 +1,25 @@
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-#game-container { width: 400px; background: #2d2d2d; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.header { display: flex; justify-content: space-between; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 20px; }
-.wallet-info { font-size: 1.2rem; font-weight: bold; color: #4caf50; }
-.stock-item { display: flex; justify-content: space-between; background: #3d3d3d; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-.price-up { color: #4caf50; }
-.price-down { color: #f44336; }
+body { background: #121212; color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+#game-container { width: 450px; background: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 20px; overflow: hidden; position: relative; }
+
+/* Portföy Kutuları */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.stat-box { background: #252525; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; border: 1px solid #444; }
+#balance { color: #4caf50; font-weight: bold; font-size: 1.1rem; }
+#profit-loss { font-weight: bold; }
+
+/* Borsa Listesi */
+#stocks-list { max-height: 250px; overflow-y: auto; }
+.stock-item { display: flex; align-items: center; justify-content: space-between; background: #2a2a2a; margin-bottom: 8px; padding: 12px; border-radius: 10px; transition: 0.3s; }
+.stock-info { display: flex; flex-direction: column; }
+.stock-name { font-weight: bold; font-size: 0.9rem; }
+.stock-price { font-family: 'Courier New', monospace; }
+
+/* Aksiyon Butonları */
+.cash-control { margin-top: 20px; display: flex; gap: 10px; }
+input { flex: 1; background: #333; border: 1px solid #444; color: white; border-radius: 8px; padding: 10px; }
+.btn-action { background: #3f51b5; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
+
+/* Modal (Overlay) */
 .hidden { display: none; }
-button { width: 100%; padding: 10px; margin-top: 10px; border: none; border-radius: 5px; cursor: pointer; background: #2196f3; color: white; font-weight: bold; }
-button:hover { opacity: 0.9; }
+#sector-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal-content { background: #2d2d2d; padding: 30px; border-radius: 15px; text-align: center; border: 1px solid #3f51b5; }
