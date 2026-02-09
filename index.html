@@ -2,31 +2,38 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Finance Empire - Beta</title>
+    <title>Finance Empire: Pro Trader</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <div class="header">
-            <div class="wallet-info">Cüzdan: <span id="balance">100</span> $</div>
-            <div class="status-info">Durum: <span id="game-status">Borsa Açık</span></div>
+        <div class="stats-grid">
+            <div class="stat-box">Nakit: <br><span id="balance">100.00</span> $</div>
+            <div class="stat-box">Portföy: <br><span id="portfolio-val">0.00</span> $</div>
+            <div class="stat-box">Kâr/Zarar: <br><span id="profit-loss">0.00</span> %</div>
         </div>
 
-        <div id="market">
-            <h3>Piyasa Verileri</h3>
+        <div id="market-section">
+            <h3 class="section-title">Canlı Borsa</h3>
             <div id="stocks-list"></div>
         </div>
 
-        <div id="controls">
-            <button onclick="cashOut()" id="cashout-btn">Para Çek ve Sektör Seç</button>
+        <div class="cash-control">
+            <input type="number" id="withdraw-amount" placeholder="Çekilecek Tutar">
+            <button onclick="withdrawCash()" class="btn-action">Nakit Çek ve Sektör Gör</button>
         </div>
 
-        <div id="sector-modal" class="hidden">
-            <h2>Kritik Karar!</h2>
-            <p>Bir sektör seç ve yoluna devam et. Bu seçim geri alınamaz!</p>
-            <button onclick="selectSector('Gayrimenkul')">Gayrimenkul</button>
-            <button onclick="selectSector('Kripto')">Kripto Madenciliği</button>
-            <button onclick="selectSector('Sanayi')">Ağır Sanayi</button>
+        <div id="sector-overlay" class="hidden">
+            <div class="modal-content">
+                <h2>Sektör Seçimi</h2>
+                <p>Nakit varlığınızla bir sektöre giriş yapın:</p>
+                <div class="sector-btns">
+                    <button onclick="selectSector('Gayrimenkul')">Gayrimenkul Yatırımı</button>
+                    <button onclick="selectSector('Kripto')">Kripto Maden Çiftliği</button>
+                    <button onclick="selectSector('Sanayi')">Fabrika Kur</button>
+                </div>
+                <button onclick="closeModal()" class="btn-close">Geri Dön</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
