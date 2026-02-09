@@ -2,9 +2,9 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Sermaye_Yonetimi_Sistemi_v2</title>
+    <title>Sermaye_Yonetimi_Sistemi_v3</title>
     <style>
-        /* SCROLL ENGELLEME VE DASHBOARD TASARIMI */
+        /* TEMEL SIFIRLAMA VE SABİT EKRAN */
         html, body { 
             height: 100%; margin: 0; padding: 0; overflow: hidden; 
             background: #fff; color: #000; font-family: "Times New Roman", Times, serif; 
@@ -13,103 +13,121 @@
             background: #f6f6f6; border-bottom: 1px solid #a2a9b1; 
             padding: 5px 20px; font-size: 13px; text-align: right; height: 25px;
         }
+
+        /* 3 SÜTUNLU ANA YAPI */
         .main-wrapper {
-            display: flex; height: calc(100vh - 36px); padding: 10px; gap: 10px;
+            display: flex; height: calc(100vh - 40px); padding: 10px; gap: 10px; box-sizing: border-box;
         }
 
-        /* SÜTUNLAR */
+        /* SÜTUN AYARLARI */
         .column {
-            display: flex; flex-direction: column; border: 1px solid #a2a9b1;
-            padding: 10px; background: #fff; overflow: hidden;
+            display: flex; flex-direction: column; flex: 1; 
+            border: 1px solid #a2a9b1; background: #fff; overflow: hidden;
         }
-        .col-1 { flex: 1.2; } /* Borsa ve Portföy */
-        .col-2 { flex: 1.2; } /* Varlıklar ve Kira */
-        .col-3 { flex: 0.8; } /* Market ve Danışmanlar */
+        .col-large { flex: 1.5; } /* Borsa sütunu daha geniş */
 
-        .scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+        /* BAŞLIKLAR */
+        h1 { font-size: 18px; border-bottom: 2px solid #333; margin: 0; padding: 5px; background: #eee; }
+        h3 { font-size: 14px; margin: 0; padding: 5px; background: #eaecf0; border-bottom: 1px solid #a2a9b1; }
 
-        /* BİLEŞENLER */
-        h1 { font-size: 20px; border-bottom: 1px solid #aaa; margin: 0 0 10px 0; font-weight: normal; }
-        h3 { font-size: 16px; border-bottom: 1px dotted #aaa; margin: 15px 0 5px 0; background: #f8f9fa; }
-        
-        .status-box { 
-            border: 1px solid #000; padding: 10px; background: #fdfdfd; 
-            font-size: 13px; margin-bottom: 10px; line-height: 1.4;
+        /* KENDİ İÇİNDE SCROLL OLAN ALANLAR */
+        .section {
+            display: flex; flex-direction: column; flex: 1; /* Alanı doldur */
+            border-bottom: 1px solid #a2a9b1; overflow: hidden;
         }
-        .wiki-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
-        .wiki-table th { background: #eaecf0; border: 1px solid #a2a9b1; padding: 4px; text-align: left; }
-        .wiki-table td { border: 1px solid #a2a9b1; padding: 4px; }
+        .scroll-area {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+        }
 
-        .rent-box { background: #f0f8ff; border: 1px solid #a2a9b1; padding: 8px; margin-top: 5px; font-size: 13px; }
-        .shop-item { border: 1px solid #ccc; padding: 8px; margin-bottom: 8px; font-size: 12px; background: #fafafa; }
+        /* TABLO VE GÖRSEL STİLLER */
+        .wiki-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .wiki-table th { position: sticky; top: 0; background: #f8f9fa; border-bottom: 2px solid #a2a9b1; padding: 5px; text-align: left; z-index: 1; }
+        .wiki-table td { border-bottom: 1px solid #eee; padding: 5px; }
         
+        .status-box { padding: 10px; background: #f9f9f9; border-bottom: 1px solid #a2a9b1; font-size: 13px; }
+        .shop-item { padding: 8px; border-bottom: 1px solid #eee; font-size: 12px; }
+        .rent-box { background: #eef9ff; padding: 10px; border-bottom: 1px solid #a2a9b1; }
+
+        /* BUTONLAR */
         a { color: #0645ad; text-decoration: none; cursor: pointer; font-weight: bold; }
         a:hover { text-decoration: underline; }
-        .profit { color: #008000; } .loss { color: #d33; }
+        .profit { color: #008000; font-weight: bold; }
+        .loss { color: #d33; font-weight: bold; }
 
         /* Scrollbar inceltme */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div id="mw-header">Sistem Zamanı: <span id="clock">00:00</span></div>
+    <div id="mw-header">Terminal_v3.0 | <span id="clock">00:00</span></div>
     
     <div class="main-wrapper">
-        <div class="column col-1">
-            <h1>Finansal Dashboard</h1>
+        <div class="column col-large">
+            <h1>Finansal Veri Akışı</h1>
             <div class="status-box">
-                <b>Nakit:</b> <span id="balance">100.00</span> $<br>
-                <b>Portföy:</b> <span id="port-val">0.00</span> $<br>
-                <b>Toplam (Nakit+Port):</b> <u><span id="total-net">100.00</span> $</u><br>
-                <b>Yatırım Akılı:</b> %<span id="intellect">1.0000</span>
+                <b>Nakit:</b> <span id="balance">100.00</span> $ | 
+                <b>Portföy:</b> <span id="port-val">0.00</span> $ <br>
+                <b>Net Değer:</b> <span id="total-net">100.00</span> $ |
+                <b>Y. Akılı:</b> %<span id="intellect">1.0000</span>
             </div>
             
-            <h3>Canlı Borsa</h3>
-            <div class="scroll-area">
-                <table class="wiki-table">
-                    <thead><tr><th>Kod</th><th>Fiyat</th><th>İşlem</th></tr></thead>
-                    <tbody id="market-body"></tbody>
-                </table>
+            <div class="section">
+                <h3>Aktif Piyasalar (50 Enstrüman)</h3>
+                <div class="scroll-area">
+                    <table class="wiki-table">
+                        <thead><tr><th>Kod</th><th>Fiyat</th><th>Aksiyon</th></tr></thead>
+                        <tbody id="market-body"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <h3>Açık Pozisyonlar</h3>
-            <div class="scroll-area">
-                <table class="wiki-table">
-                    <thead><tr><th>Hisse</th><th>Adet</th><th>K/Z</th><th>Sat</th></tr></thead>
-                    <tbody id="portfolio-body"></tbody>
-                </table>
+            <div class="section" style="flex: 0.6;">
+                <h3>Açık Pozisyonlar</h3>
+                <div class="scroll-area">
+                    <table class="wiki-table">
+                        <thead><tr><th>Hisse</th><th>Adet</th><th>Maliyet</th><th>K/Z</th><th>İşlem</th></tr></thead>
+                        <tbody id="portfolio-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="column col-2">
-            <h1>Gayrimenkul & Araç</h1>
+        <div class="column">
+            <h1>Mülk ve Varlık Yönetimi</h1>
             <div class="rent-box">
-                <b>Bekleyen Kira:</b> <span id="pending-rent" style="color:green; font-weight:bold;">0.00</span> $<br>
-                <a onclick="collectRent()">[KİRAYI TAHSİL ET]</a>
+                <b>Biriken Kira:</b> <span id="pending-rent" class="profit">0.00</span> $<br>
+                <a onclick="collectRent()">[TAHSİLAT YAP]</a>
             </div>
 
-            <h3>Mülk Listesi</h3>
-            <div class="scroll-area">
-                <table class="wiki-table">
-                    <thead><tr><th>Varlık</th><th>Adet</th><th>Getiri/sn</th></tr></thead>
-                    <tbody id="asset-stats-body"></tbody>
-                </table>
+            <div class="section">
+                <h3>Mülk Envanteri</h3>
+                <div class="scroll-area">
+                    <table class="wiki-table">
+                        <thead><tr><th>Varlık</th><th>Adet</th><th>Gelir/s</th></tr></thead>
+                        <tbody id="asset-stats-body"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <h3>Varlık Alım Marketi</h3>
-            <div class="scroll-area" id="asset-shop"></div>
+            <div class="section">
+                <h3>Varlık Alım Paneli</h3>
+                <div class="scroll-area" id="asset-shop"></div>
+            </div>
         </div>
 
-        <div class="column col-3">
-            <h1>Yönetim & Market</h1>
-            <h3>Broker Alımı</h3>
-            <div class="scroll-area" id="broker-shop"></div>
+        <div class="column" style="flex: 0.8;">
+            <h1>Operasyonel Yönetim</h1>
+            <div class="section">
+                <h3>Broker Hizmetleri</h3>
+                <div class="scroll-area" id="broker-shop"></div>
+            </div>
 
-            <h3>Aktif Kadro</h3>
-            <div class="scroll-area">
-                <ul id="active-brokers-list" style="font-size: 11px; padding-left: 15px; margin: 0;"></ul>
+            <div class="section">
+                <h3>Aktif Kadro</h3>
+                <div class="scroll-area">
+                    <ul id="active-brokers-list" style="font-size: 11px; padding: 10px; margin: 0; list-style: none;"></ul>
+                </div>
             </div>
         </div>
     </div>
