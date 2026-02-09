@@ -2,53 +2,66 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Sermaye_Yonetimi_Sistemi</title>
+    <title>Sermaye_Piyasasi_Analizi - Vikipedi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="nav-links">
-        Dosya | İşlemler | Görünüm | Geçmiş | Yardım
-    </div>
+    <div id="top-util">Oturum açılmadı | Tartışma | Katkılar</div>
+    
+    <div class="container">
+        <div class="article-side">
+            <h1 id="heading">Finansal Spekülasyon ve Portföy Yönetimi</h1>
+            <div class="meta-info">Vikipedi, özgür ansiklopedi</div>
+            
+            <p>Finansal piyasalarda <b>spekülasyon</b>, bir varlığın fiyatındaki dalgalanmalardan kâr sağlama amacıyla yapılan riskli yatırım faaliyetidir. Başlangıç sermayeniz olan <u>100.00 USD</u> ile piyasadaki farklı sektörlere giriş yapabilirsiniz.</p>
+            
+            <h3>Stratejik Kararlar</h3>
+            <p>Oyuncuların, sermayelerini doğru yönetmek için borsa verilerini takip etmeleri ve periyodik olarak karşılaştıkları finansal problemleri çözmeleri gerekmektedir. Problemler çözüldükçe çarpan oranları artış gösterir.</p>
 
-    <div class="main-content">
-        <h1>Borsa ve Yatırım Portföyü</h1>
-        
-        <div class="stats-line">
-            <b>Mevcut Nakit:</b> <span id="balance">100.00</span> $ | 
-            <b>Hisse Değeri:</b> <span id="port-val">0.00</span> $ |
-            <b>Net Durum:</b> <span id="profit-loss">0.00</span> %
+            <div class="withdraw-box">
+                <b>Nakit Çekme İşlemi:</b><br>
+                Cüzdandaki tutarın bir kısmını ayırmak için miktarı girin: 
+                <input type="number" id="cash-out-input" value="0">
+                <a href="javascript:void(0)" onclick="initWithdraw()">[çek ve sektöre aktar]</a>
+            </div>
+
+            <div id="problem-area" class="hidden">
+                <hr>
+                <p><b>GÜNCEL SORUN:</b> <span id="question-text">Yükleniyor...</span></p>
+                <input type="text" id="answer-input" placeholder="Cevabınız...">
+                <a href="javascript:void(0)" onclick="checkAnswer()">[onayla]</a>
+            </div>
         </div>
 
-        <p>Aşağıdaki tabloda aktif işlem gören hisseler yer almaktadır. Problemleri çözmek çarpanınızı artırır.</p>
+        <div class="market-side">
+            <div class="stats-box">
+                <b>Cüzdan:</b> <span id="balance">100.00</span> $ <br>
+                <b>Hisse Değeri:</b> <span id="port-val">0.00</span> $ <br>
+                <b>Toplam:</b> <span id="total-val">100.00</span> $
+            </div>
 
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Sembol</th>
-                    <th>Fiyat</th>
-                    <th>Değişim</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
-            <tbody id="market-list"></tbody>
-        </table>
-
-        <div class="management-zone">
-            <h3>Nakit Çekme ve Sektörel Tercih</h3>
-            <p>Sektör seçimi için çekilecek tutarı girin:</p>
-            <input type="number" id="cash-input" value="0">
-            <button onclick="processWithdraw()">Onayla ve Seçenekleri Gör</button>
+            <table class="market-table">
+                <thead>
+                    <tr>
+                        <th>Sektör / Hisse</th>
+                        <th>Fiyat</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="market-body">
+                    </tbody>
+            </table>
         </div>
     </div>
 
     <div id="overlay" class="hidden">
-        <div class="decision-box">
-            <h2>Sektör Belirleme</h2>
-            <p>Çektiğiniz tutarla hangi alana yatırım yapacaksınız?</p>
-            <ul class="decision-list">
-                <li><a href="#" onclick="pick('Gayrimenkul')">Gayrimenkul Sektörü</a></li>
-                <li><a href="#" onclick="pick('Sanayi')">Ağır Sanayi</a></li>
-                <li><a href="#" onclick="pick('Teknoloji')">Yazılım ve Yapay Zeka</a></li>
+        <div class="modal">
+            <h2>Sektörel Uzmanlaşma Seçimi</h2>
+            <p>Çektiğiniz sermaye ile hangi yoldan devam edeceksiniz?</p>
+            <ul>
+                <li><a href="#" onclick="chooseSector('Emlak')">Gayrimenkul Yatırım Ortaklığı</a></li>
+                <li><a href="#" onclick="chooseSector('Teknoloji')">Yazılım ve Donanım Geliştirme</a></li>
+                <li><a href="#" onclick="chooseSector('Enerji')">Yenilenebilir Enerji Üretimi</a></li>
             </ul>
         </div>
     </div>
