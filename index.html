@@ -6,50 +6,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="mw-header">Sistem Zamanı: <span id="clock">21:35</span></div>
+    <div id="mw-header">Sistem Zamanı: <span id="clock">21:45</span></div>
     
     <div class="wrapper">
         <div class="main-column">
-            <h1>Finansal İşlemler ve Varlık Yönetimi</h1>
+            <h1 id="game-title">Sermaye ve Strateji Yönetimi</h1>
             
             <div class="status-box">
                 <b>Nakit:</b> <span id="balance">100.00</span> $ | 
-                <b>Portföy Toplam Değeri:</b> <span id="port-val">0.00</span> $ |
+                <b>Portföy Değeri:</b> <span id="port-val">0.00</span> $ |
                 <b>Yatırım Akılı:</b> % <span id="intellect">1.00</span>
             </div>
 
             <h3>Aktif Piyasa Verileri</h3>
             <table class="wiki-table">
-                <thead>
-                    <tr>
-                        <th>Kod</th>
-                        <th>Birim Fiyat</th>
-                        <th>Değişim</th>
-                        <th>İşlem</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Kod</th><th>Fiyat</th><th>Değişim</th><th>İşlem</th></tr></thead>
                 <tbody id="market-body"></tbody>
             </table>
 
-            <h3>Portföy Detayları ve Pozisyonlar</h3>
+            <h3>Portföy Detayları</h3>
             <table class="wiki-table">
-                <thead>
-                    <tr>
-                        <th>Hisse</th>
-                        <th>Adet</th>
-                        <th>Maliyet</th>
-                        <th>Kâr/Zarar</th>
-                        <th>Aksiyon</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Hisse</th><th>Adet</th><th>Maliyet</th><th>K/Z</th><th>Aksiyon</th></tr></thead>
                 <tbody id="portfolio-body"></tbody>
             </table>
 
             <div class="problem-section">
-                <h3>Analitik Gelişim (Zeka Artışı)</h3>
-                <p id="question-text">Soru yükleniyor...</p>
+                <h3>Analitik Gelişim</h3>
+                <p id="question-text">Yükleniyor...</p>
                 <div class="input-row">
-                    <input type="number" id="ans-input" step="any" placeholder="Sonuç...">
+                    <input type="text" id="ans-input" placeholder="Sonuç...">
                     <a href="javascript:void(0)" onclick="solve()">[Cevabı Gönder]</a>
                 </div>
             </div>
@@ -57,29 +42,12 @@
 
         <div class="side-column">
             <h3>Yatırım Danışmanlığı</h3>
-            <div id="broker-market">
-                <div class="shop-item">
-                    <b>Junior Broker</b><br>
-                    <i>Zekayı otomatik artırır.</i><br>
-                    Maliyet: 150.00 $<br>
-                    <a onclick="buyBroker('junior')">[Sözleşme İmzala]</a>
-                </div>
-                <div class="shop-item">
-                    <b>Professional Broker</b><br>
-                    Maliyet: 500.00 $<br>
-                    <a onclick="buyBroker('pro')">[Sözleşme İmzala]</a>
-                </div>
-                <div class="shop-item">
-                    <b>Senior Broker</b><br>
-                    Maliyet: 1,200.00 $<br>
-                    <a onclick="buyBroker('senior')">[Sözleşme İmzala]</a>
-                </div>
-                <div class="shop-item">
-                    <b>AI Engine (v1.0)</b><br>
-                    Maliyet: 5,000.00 $<br>
-                    <a onclick="buyBroker('ai')">[Sistemi Entegre Et]</a>
-                </div>
-            </div>
+            <div id="broker-shop"></div>
+            
+            <h3>Aktif Danışmanlar</h3>
+            <ul id="active-brokers-list" style="font-size: 13px; list-style: square; padding-left: 20px;">
+                <li>Henüz bir danışman yok.</li>
+            </ul>
         </div>
     </div>
     <script src="script.js"></script>
