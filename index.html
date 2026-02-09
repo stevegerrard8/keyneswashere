@@ -2,68 +2,69 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Borsa_Piyasaları_Analizi - Vikipedi</title>
+    <title>Borsa_Analizi_v2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="mw-navigation">
-        <div class="wiki-logo-area">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo-v2-tr.png" width="80">
-            <p>VLOO-CUP</p>
-        </div>
-        <ul>
-            <li><a href="#">Ana Sayfa</a></li>
-            <li><a href="#">Portföyüm</a></li>
-            <li><a href="#">Sektör Analizi</a></li>
-        </ul>
+    <div class="top-nav">
+        Dosya | Giriş | Ekle | Sayfa Düzeni | Formüller
     </div>
-
-    <div id="content">
-        <div id="user-bar">
-            <span>Kullanıcı: <b>Spekülatör_01</b></span> | 
-            <span>Cüzdan: <b id="balance">100.00</b> USD</span> | 
-            <span>Portföy: <b id="port-val">0.00</b> USD</span>
+    
+    <div class="main-layout">
+        <div class="side-menu">
+            <p><b>Gezinti</b></p>
+            <ul>
+                <li><a href="#">Anasayfa</a></li>
+                <li><a href="#">Portföy Verileri</a></li>
+                <li><a href="#">Hisse Geçmişi</a></li>
+            </ul>
         </div>
 
-        <h1 id="firstHeading">Küresel Hisse Senedi Piyasası</h1>
-        
-        <div id="bodyContent">
-            <p>Aşağıdaki tablo, güncel piyasa verilerini ve yatırım yapılabilir varlıkları listeler. Finansal okuryazarlık problemlerini çözmek, kâr marjınızı doğrudan etkiler.</p>
+        <div class="content-area">
+            <h1 class="page-title">Piyasa Endeksi ve Sermaye Yönetimi</h1>
+            
+            <div class="user-stats">
+                Nakit: <span id="balance">100.00</span> $ | 
+                Hisse Değeri: <span id="port-val">0.00</span> $ |
+                <span id="pl-label">K/Z:</span> <span id="profit-loss">0.00</span> %
+            </div>
 
-            <table class="wikitable">
+            <p>Aşağıdaki hisseler üzerinden alım-satım gerçekleştirebilirsiniz. "Para Çek" fonksiyonu sektörel geçişi tetikler.</p>
+
+            <table class="classic-table">
                 <thead>
                     <tr>
-                        <th>Hisse Adı</th>
-                        <th>Birim Fiyat</th>
-                        <th>Değişim</th>
+                        <th>Hisse Sembolü</th>
+                        <th>Fiyat ($)</th>
+                        <th>Değişim (%)</th>
                         <th>İşlem</th>
                     </tr>
                 </thead>
-                <tbody id="market-body">
+                <tbody id="market-data">
                     </tbody>
             </table>
 
-            <hr>
-
-            <div class="action-section">
-                <h3>Sektörel Geçiş ve Nakit Yönetimi</h3>
-                <p>Mevcut nakit bakiyenizden çekmek istediğiniz tutarı giriniz:</p>
-                <input type="number" id="withdraw-input" placeholder="0.00">
-                <button onclick="handleWithdraw()">Sektör Seçeneklerini Görüntüle</button>
+            <div class="withdraw-zone">
+                <hr>
+                <input type="number" id="withdraw-amt" placeholder="Tutar girin...">
+                <button onclick="requestWithdraw()">Nakit Çek ve Sektör Seç</button>
             </div>
         </div>
     </div>
 
     <div id="sector-overlay" class="hidden">
-        <div class="wiki-modal">
-            <h2>Kritik Karar: Sektörel Uzmanlaşma</h2>
-            <p>Çektiğiniz bakiye ile yalnızca bir (1) sektöre giriş yapabilirsiniz. Bu işlem geri alınamaz.</p>
-            <div class="sector-list">
-                <button onclick="finalizeSector('Enerji')">Enerji Sanayii</button>
-                <button onclick="finalizeSector('Teknoloji')">Yazılım Ar-Ge</button>
-                <button onclick="finalizeSector('Tarım')">Sürdürülebilir Tarım</button>
-            </div>
+        <div class="sector-box">
+            <h3>Bir Yatırım Sektörü Belirleyin</h3>
+            <p>Bu seçimden sonra borsa dışı kazançlarınız bu alana bağlanacaktır:</p>
+            <ul>
+                <li><a href="#" onclick="finalizeSector('Emlak')">> Gayrimenkul ve Konut</a></li>
+                <li><a href="#" onclick="finalizeSector('Teknoloji')">> Yazılım ve Bilişim</a></li>
+                <li><a href="#" onclick="finalizeSector('Tarım')">> Endüstriyel Tarım</a></li>
+            </ul>
+            <br>
+            <button onclick="closeSectors()">Vazgeç</button>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
