@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Empire - Beta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div class="header">
+            <div class="wallet-info">Cüzdan: <span id="balance">100</span> $</div>
+            <div class="status-info">Durum: <span id="game-status">Borsa Açık</span></div>
+        </div>
+
+        <div id="market">
+            <h3>Piyasa Verileri</h3>
+            <div id="stocks-list"></div>
+        </div>
+
+        <div id="controls">
+            <button onclick="cashOut()" id="cashout-btn">Para Çek ve Sektör Seç</button>
+        </div>
+
+        <div id="sector-modal" class="hidden">
+            <h2>Kritik Karar!</h2>
+            <p>Bir sektör seç ve yoluna devam et. Bu seçim geri alınamaz!</p>
+            <button onclick="selectSector('Gayrimenkul')">Gayrimenkul</button>
+            <button onclick="selectSector('Kripto')">Kripto Madenciliği</button>
+            <button onclick="selectSector('Sanayi')">Ağır Sanayi</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
