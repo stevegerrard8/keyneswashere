@@ -1,79 +1,72 @@
 let balance = 100;
-let initialBalance = 100;
-let portfolio = {}; // Hangi hisseden kaç tane var?
+let portfolio = {}; // Hangi hisseden kaç adet var?
 let stocks = [
-    { name: "APPLE", price: 150, last: 150 },
-    { name: "TESLA", price: 200, last: 200 },
-    { name: "BITCOIN", price: 50, last: 50 },
-    { name: "GOLD", price: 180, last: 180 },
-    { name: "OIL", price: 80, last: 80 }
+    { id: 'S1', name: "HISSE_A", price: 10, last: 10 },
+    { id: 'S2', name: "HISSE_B", price: 25, last: 25 },
+    { id: 'S3', name: "HISSE_C", price: 50, last: 50 },
+    { id: 'S4', name: "HISSE_D", price: 5, last: 5 },
+    { id: 'S5', name: "HISSE_E", price: 100, last: 100 }
 ];
 
 function updateMarket() {
-    const list = document.getElementById('stocks-list');
-    list.innerHTML = "";
-    let totalPortfolioVal = 0;
+    const tbody = document.getElementById('market-data');
+    tbody.innerHTML = "";
+    let totalPortVal = 0;
 
     stocks.forEach(s => {
+        // Fiyat Dalgalanması
         s.last = s.price;
-        s.price += (Math.random() * 10 - 5); // Daha agresif dalgalanma
-        if(s.price < 1) s.price = 1;
+        s.price += (Math.random() * 2 - 1);
+        if(s.price < 0.5) s.price = 0.5;
 
-        // Sahip olunan hisse değerini hesapla
-        if(portfolio[s.name]) {
-            totalPortfolioVal += portfolio[s.name] * s.price;
-        }
+        // Portföy değerini hesapla
+        if(portfolio[s.id]) totalPortVal += portfolio[s.id] * s.price;
 
-        const div = document.createElement('div');
-        div.className = 'stock-item';
-        const color = s.price >= s.last ? '#4caf50' : '#f44336';
-        
-        div.innerHTML = `
-            <div class="stock-info">
-                <span class="stock-name">${s.name}</span>
-                <span style="font-size:0.7rem">Sende: ${portfolio[s.name] || 0} adet</span>
-            </div>
-            <span class="stock-price" style="color:${color}">${s.price.toFixed(2)} $</span>
-            <button onclick="buyStock('${s.name}', ${s.price})" style="background:#444; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer">AL</button>
+        const change = ((s.price - s.last) / s.last * 100).toFixed(2);
+        const color = s.price >= s.last ? "green" : "red";
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${s.name} (Sahip: ${portfolio[s.id] || 0})</td>
+            <td>${s.price.toFixed(2)}</td>
+            <td style="color:${color}">${change}%</td>
+            <td><button onclick="buy('${s.id}', ${s.price})">AL</button></td>
         `;
-        list.appendChild(div);
+        tbody.appendChild(tr);
     });
 
-    // Verileri Güncelle
-    document.getElementById('portfolio-val').innerText = totalPortfolioVal.toFixed(2);
-    let totalWealth = balance + totalPortfolioVal;
-    let pl = ((totalWealth - initialBalance) / initialBalance) * 100;
-    const plEl = document.getElementById('profit-loss');
-    plEl.innerText = pl.toFixed(2);
-    plEl.style.color = pl >= 0 ? '#4caf50' : '#f44336';
+    // Stats güncelleme
+    document.getElementById('balance').innerText = balance.toFixed(2);
+    document.getElementById('port-val').innerText = totalPortVal.toFixed(2);
+    let total = balance + totalPortVal;
+    document.getElementById('profit-loss').innerText = (((total - 100)/100)*100).toFixed(2);
 }
 
-function buyStock(name, price) {
-    if (balance >= price) {
+function buy(id, price) {
+    if(balance >= price) {
         balance -= price;
-        portfolio[name] = (portfolio[name] || 0) + 1;
-        updateUI();
-    } else {
-        alert("Yetersiz Nakit!");
+        portfolio[id] = (portfolio[id] || 0) + 1;
+        updateMarket();
     }
 }
 
-function withdrawCash() {
-    let amt = parseFloat(document.getElementById('withdraw-amount').value);
-    if (amt > 0 && amt <= balance) {
-        // Belirlediğin tutarı "çekmiş" oluyorsun, sektör seçimi açılıyor
-        alert(`${amt}$ nakit ayrıldı. Sektör seçebilirsin!`);
+function requestWithdraw() {
+    let amt = parseFloat(document.getElementById('withdraw-amt').value);
+    if(amt > 0 && amt <= balance) {
+        balance -= amt; // Çekilen para cüzdandan düşer
         document.getElementById('sector-overlay').classList.remove('hidden');
     } else {
-        alert("Geçersiz tutar! Bakiyenizi kontrol edin.");
+        alert("Yetersiz nakit!");
     }
 }
 
-function updateUI() {
-    document.getElementById('balance').innerText = balance.toFixed(2);
+function finalizeSector(name) {
+    alert(name + " sektörüne giriş yaptınız. Artık bu alanda problemler çözeceksiniz.");
+    document.getElementById('sector-overlay').classList.add('hidden');
+    // Borsa arkada akmaya devam ediyor...
 }
 
-function closeModal() { document.getElementById('sector-overlay').classList.add('hidden'); }
+function closeSectors() { document.getElementById('sector-overlay').classList.add('hidden'); }
 
 setInterval(updateMarket, 2000);
 updateMarket();
