@@ -1,10 +1,10 @@
 let balance = 100.00;
 let intellect = 1.00;
-let portfolio = {};
+let portfolio = {}; 
 let activeBrokers = [];
 let currentQ = {};
 
-// 10 Farklı Hisse Senedi
+// Piyasa Verileri (10 Hisse)
 const market = [
     {id: 'CRSH', name: 'CRASH_SCOPE', price: 20}, {id: 'WIKI', name: 'WIKI_INV', price: 45},
     {id: 'GLDB', name: 'GOLD_BULL', price: 15}, {id: 'AITE', name: 'AI_TECH', price: 120},
@@ -13,46 +13,45 @@ const market = [
     {id: 'CYBR', name: 'CYBER_SEC', price: 90}, {id: 'FLOW', name: 'LIQUID_FLOW', price: 30}
 ];
 
-// 6 Farklı Danışman
+// Danışmanlar ve Güçleri
 const shop = [
-    {id: 'jr', name: 'Junior Broker', price: 150, boost: 0.001},
-    {id: 'pro', name: 'Professional Broker', price: 600, boost: 0.003},
-    {id: 'sr', name: 'Senior Broker', price: 1500, boost: 0.008},
-    {id: 'mng', name: 'Portfolio Manager', price: 4000, boost: 0.02},
-    {id: 'ai', name: 'AI Engine v1', price: 10000, boost: 0.05},
-    {id: 'quant', name: 'Quant Algorithm', price: 25000, boost: 0.15}
+    {id: 'jr', name: 'Junior Broker', price: 150, boost: 0.001, tradePower: 0.1},
+    {id: 'pro', name: 'Professional Broker', price: 600, boost: 0.003, tradePower: 0.3},
+    {id: 'sr', name: 'Senior Broker', price: 1500, boost: 0.008, tradePower: 0.6},
+    {id: 'mng', name: 'Portfolio Manager', price: 4000, boost: 0.02, tradePower: 1.2},
+    {id: 'ai', name: 'AI Engine v1', price: 10000, boost: 0.05, tradePower: 3.0},
+    {id: 'quant', name: 'Quant Algorithm', price: 25000, boost: 0.15, tradePower: 10.0}
 ];
 
-// Çeşitlendirilmiş Matematik Soruları
-function generateQuestion() {
-    const type = Math.floor(Math.random() * 3); // 0: Dört işlem, 1: Kare/Küp, 2: Denklem
-    let a = Math.floor(Math.random() * 50) + 1;
-    let b = Math.floor(Math.random() * 20) + 1;
-    
-    if (type === 0) {
-        const op = ['+', '-', '*'][Math.floor(Math.random() * 3)];
-        currentQ = { q: `${a} ${op === '*' ? 'x' : op} ${b}`, a: eval(`${a} ${op} ${b}`) };
-    } else if (type === 1) {
-        currentQ = { q: `${a} sayısının karesi`, a: a * a };
-    } else {
-        let x = Math.floor(Math.random() * 10) + 1;
-        currentQ = { q: `${a} + x = ${a + x} ise x`, a: x };
-    }
-    document.getElementById('question-text').innerText = `Problem: ${currentQ.q} = ?`;
+// --- OTOMATİK TRADE SİSTEMİ ---
+function autoTrade() {
+    if (activeBrokers.length === 0) return;
+
+    activeBrokers.forEach(broker => {
+        // Her danışman için rastgele bir hisse seç
+        const targetStock = market[Math.floor(Math.random() * market.length)];
+        
+        // ALIM KARARI: Fiyat düşükse ve nakit varsa (Zeka çarpanı alım ihtimalini artırır)
+        let buySignal = Math.random() * intellect;
+        if (buySignal > 1.2 && balance >= targetStock.price) {
+            buy(targetStock.id, targetStock.price, true);
+            console.log(`${broker.name} otomatik alım yaptı: ${targetStock.id}`);
+        }
+
+        // SATIŞ KARARI: Eldeki hisse kârdaysa
+        if (portfolio[targetStock.id]?.qty > 0) {
+            let profit = targetStock.price - portfolio[targetStock.id].avgCost;
+            // Zeka arttıkça daha akıllıca satış yapar (zararına satma ihtimali düşer)
+            if (profit > (5 / intellect) || profit > 10) { 
+                sell(targetStock.id, targetStock.price, true);
+                console.log(`${broker.name} otomatik satış yaptı: ${targetStock.id}`);
+            }
+        }
+    });
 }
 
-function solve() {
-    const ans = parseFloat(document.getElementById('ans-input').value);
-    if(ans === currentQ.a) {
-        intellect += 0.02;
-        generateQuestion();
-    }
-    document.getElementById('ans-input').value = "";
-    updateUI();
-}
-
+// UI Güncelleme ve Piyasa Akışı
 function updateUI() {
-    // Market ve Portföy Tabloları
     const mBody = document.getElementById('market-body');
     const pBody = document.getElementById('portfolio-body');
     mBody.innerHTML = ""; pBody.innerHTML = "";
@@ -73,38 +72,39 @@ function updateUI() {
         }
     });
 
-    // Danışman Marketi ve Aktif Liste
-    const shopDiv = document.getElementById('broker-shop');
-    shopDiv.innerHTML = "";
-    shop.forEach(b => {
-        shopDiv.innerHTML += `<div class="shop-item"><b>${b.name}</b><br>Maliyet: ${b.price} $<br><a onclick="buyBroker('${b.id}')">[Satın Al]</a></div>`;
-    });
-
-    const activeList = document.getElementById('active-brokers-list');
-    if(activeBrokers.length > 0) {
-        activeList.innerHTML = activeBrokers.map(b => `<li>${b.name} (+%${(b.boost*100).toFixed(3)} hız)</li>`).join("");
-    }
-
     document.getElementById('balance').innerText = balance.toFixed(2);
     document.getElementById('port-val').innerText = pVal.toFixed(2);
     document.getElementById('intellect').innerText = intellect.toFixed(3);
+    
+    // Aktif Danışmanlar Listesi
+    const activeList = document.getElementById('active-brokers-list');
+    activeList.innerHTML = activeBrokers.length > 0 
+        ? activeBrokers.map(b => `<li>${b.name} (Aktif İşlemde)</li>`).join("")
+        : "<li>Henüz bir danışman yok.</li>";
+
+    // Danışman Marketi (Fiyat kontrolü ile)
+    const shopDiv = document.getElementById('broker-shop');
+    shopDiv.innerHTML = "";
+    shop.forEach(b => {
+        shopDiv.innerHTML += `<div class="shop-item"><b>${b.name}</b><br>Maliyet: ${b.price} $<br><a onclick="buyBroker('${b.id}')">[Sözleşme İmzala]</a></div>`;
+    });
 }
 
-function buy(id, price) {
+function buy(id, price, auto = false) {
     if(balance >= price) {
         balance -= price;
         if(!portfolio[id]) portfolio[id] = {qty: 0, avgCost: 0};
         portfolio[id].avgCost = ((portfolio[id].qty * portfolio[id].avgCost) + price) / (portfolio[id].qty + 1);
         portfolio[id].qty++;
-        updateUI();
+        if(!auto) updateUI();
     }
 }
 
-function sell(id, price) {
+function sell(id, price, auto = false) {
     if(portfolio[id]?.qty > 0) {
         balance += price;
         portfolio[id].qty--;
-        updateUI();
+        if(!auto) updateUI();
     }
 }
 
@@ -113,12 +113,14 @@ function buyBroker(id) {
     if(balance >= b.price) {
         balance -= b.price;
         activeBrokers.push(b);
-        // Zeka artış döngüsünü başlat
-        setInterval(() => { intellect += b.boost; updateUI(); }, 5000);
+        // Zeka artış döngüsü
+        setInterval(() => { intellect += b.boost; }, 5000);
         updateUI();
     }
 }
 
-setInterval(updateUI, 3000);
+// Döngüler
+setInterval(updateUI, 3000);   // Borsa ve UI güncelleme
+setInterval(autoTrade, 5000); // OTOMATİK TRADE (5 saniyede bir analiz)
 generateQuestion();
 updateUI();
