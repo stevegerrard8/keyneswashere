@@ -2,70 +2,81 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Sermaye_Piyasasi_Analizi - Vikipedi</title>
+    <title>Sermaye_Yonetimi_ve_Zeka_Analizi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="top-util">Oturum açılmadı | Tartışma | Katkılar</div>
+    <div id="mw-header">Oturum: Spekülatör_01 | <span id="clock">21:22</span></div>
     
-    <div class="container">
-        <div class="article-side">
-            <h1 id="heading">Finansal Spekülasyon ve Portföy Yönetimi</h1>
-            <div class="meta-info">Vikipedi, özgür ansiklopedi</div>
+    <div class="wrapper">
+        <div class="main-column">
+            <h1>Finansal İşlemler ve Varlık Yönetimi</h1>
             
-            <p>Finansal piyasalarda <b>spekülasyon</b>, bir varlığın fiyatındaki dalgalanmalardan kâr sağlama amacıyla yapılan riskli yatırım faaliyetidir. Başlangıç sermayeniz olan <u>100.00 USD</u> ile piyasadaki farklı sektörlere giriş yapabilirsiniz.</p>
-            
-            <h3>Stratejik Kararlar</h3>
-            <p>Oyuncuların, sermayelerini doğru yönetmek için borsa verilerini takip etmeleri ve periyodik olarak karşılaştıkları finansal problemleri çözmeleri gerekmektedir. Problemler çözüldükçe çarpan oranları artış gösterir.</p>
-
-            <div class="withdraw-box">
-                <b>Nakit Çekme İşlemi:</b><br>
-                Cüzdandaki tutarın bir kısmını ayırmak için miktarı girin: 
-                <input type="number" id="cash-out-input" value="0">
-                <a href="javascript:void(0)" onclick="initWithdraw()">[çek ve sektöre aktar]</a>
+            <div class="status-box">
+                <b>Nakit:</b> <span id="balance">100.00</span> $ | 
+                <b>Portföy Değeri:</b> <span id="port-val">0.00</span> $ |
+                <b>Yatırım Akılı:</b> % <span id="intellect">1.00</span>
             </div>
 
-            <div id="problem-area" class="hidden">
-                <hr>
-                <p><b>GÜNCEL SORUN:</b> <span id="question-text">Yükleniyor...</span></p>
-                <input type="text" id="answer-input" placeholder="Cevabınız...">
-                <a href="javascript:void(0)" onclick="checkAnswer()">[onayla]</a>
-            </div>
-        </div>
-
-        <div class="market-side">
-            <div class="stats-box">
-                <b>Cüzdan:</b> <span id="balance">100.00</span> $ <br>
-                <b>Hisse Değeri:</b> <span id="port-val">0.00</span> $ <br>
-                <b>Toplam:</b> <span id="total-val">100.00</span> $
-            </div>
-
-            <table class="market-table">
+            <h3>Aktif Hisseler</h3>
+            <table class="wiki-table">
                 <thead>
                     <tr>
-                        <th>Sektör / Hisse</th>
+                        <th>Kod</th>
                         <th>Fiyat</th>
+                        <th>Değişim</th>
                         <th>İşlem</th>
                     </tr>
                 </thead>
-                <tbody id="market-body">
-                    </tbody>
+                <tbody id="market-body"></tbody>
             </table>
+
+            <h3>Portföy Detayları</h3>
+            <table class="wiki-table" id="portfolio-table">
+                <thead>
+                    <tr>
+                        <th>Hisse</th>
+                        <th>Adet</th>
+                        <th>Maliyet</th>
+                        <th>Kâr/Zarar</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody id="portfolio-body"></tbody>
+            </table>
+
+            <div class="problem-section">
+                <h3>Analitik Gelişim (Zeka Artışı)</h3>
+                <p id="question-text">Soru yükleniyor...</p>
+                <input type="number" id="ans-input" step="any">
+                <a href="javascript:void(0)" onclick="solve()">[Cevabı Gönder]</a>
+            </div>
+        </div>
+
+        <div class="side-column">
+            <h3>Yatırım Danışmanlığı</h3>
+            <div id="broker-market">
+                <div class="shop-item">
+                    <b>Junior Broker</b> <br>
+                    <i>Zekayı pasif artırır.</i> <br>
+                    Fiyat: 150 $ <a onclick="buyBroker('junior')">[Satın Al]</a>
+                </div>
+                <div class="shop-item">
+                    <b>Professional Broker</b> <br>
+                    Fiyat: 500 $ <a onclick="buyBroker('pro')">[Satın Al]</a>
+                </div>
+                <div class="shop-item">
+                    <b>Senior Broker</b> <br>
+                    Fiyat: 1200 $ <a onclick="buyBroker('senior')">[Satın Al]</a>
+                </div>
+                <div class="shop-item">
+                    <b>AI Engine (v1.0)</b> <br>
+                    <i>Maksimum otomasyon.</i> <br>
+                    Fiyat: 5000 $ <a onclick="buyBroker('ai')">[Satın Al]</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div id="overlay" class="hidden">
-        <div class="modal">
-            <h2>Sektörel Uzmanlaşma Seçimi</h2>
-            <p>Çektiğiniz sermaye ile hangi yoldan devam edeceksiniz?</p>
-            <ul>
-                <li><a href="#" onclick="chooseSector('Emlak')">Gayrimenkul Yatırım Ortaklığı</a></li>
-                <li><a href="#" onclick="chooseSector('Teknoloji')">Yazılım ve Donanım Geliştirme</a></li>
-                <li><a href="#" onclick="chooseSector('Enerji')">Yenilenebilir Enerji Üretimi</a></li>
-            </ul>
-        </div>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
