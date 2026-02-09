@@ -1,25 +1,24 @@
-body { background: #121212; color: #e0e0e0; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-#game-container { width: 450px; background: #1e1e1e; border: 1px solid #333; border-radius: 16px; padding: 20px; overflow: hidden; position: relative; }
+body { background-color: #f6f6f6; font-family: sans-serif; margin: 0; display: flex; color: #202122; }
 
-/* Portföy Kutuları */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.stat-box { background: #252525; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; border: 1px solid #444; }
-#balance { color: #4caf50; font-weight: bold; font-size: 1.1rem; }
-#profit-loss { font-weight: bold; }
+/* Sol Menü */
+#mw-navigation { width: 160px; padding: 1em; border-right: 1px solid #a2a9b1; height: 100vh; font-size: 0.8em; }
+.wiki-logo-area { text-align: center; border-bottom: 1px solid #a2a9b1; margin-bottom: 1em; }
 
-/* Borsa Listesi */
-#stocks-list { max-height: 250px; overflow-y: auto; }
-.stock-item { display: flex; align-items: center; justify-content: space-between; background: #2a2a2a; margin-bottom: 8px; padding: 12px; border-radius: 10px; transition: 0.3s; }
-.stock-info { display: flex; flex-direction: column; }
-.stock-name { font-weight: bold; font-size: 0.9rem; }
-.stock-price { font-family: 'Courier New', monospace; }
+/* İçerik Alanı */
+#content { flex: 1; padding: 1.5em; background: #fff; }
+#user-bar { text-align: right; font-size: 0.8em; border-bottom: 1px solid #a2a9b1; padding-bottom: 5px; margin-bottom: 10px; }
+#firstHeading { font-family: 'Linux Libertine','Georgia','Times',serif; font-size: 1.8em; border-bottom: 1px solid #a2a9b1; font-weight: normal; }
 
-/* Aksiyon Butonları */
-.cash-control { margin-top: 20px; display: flex; gap: 10px; }
-input { flex: 1; background: #333; border: 1px solid #444; color: white; border-radius: 8px; padding: 10px; }
-.btn-action { background: #3f51b5; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
+/* Wikipedia Stili Tablo */
+.wikitable { border-collapse: collapse; width: 100%; margin: 1em 0; border: 1px solid #a2a9b1; font-family: sans-serif; }
+.wikitable th { background-color: #eaecf0; padding: 8px; border: 1px solid #a2a9b1; text-align: left; }
+.wikitable td { padding: 8px; border: 1px solid #a2a9b1; }
 
-/* Modal (Overlay) */
+/* Renkler */
+.up { color: #008000; font-weight: bold; }
+.down { color: #d33; font-weight: bold; }
 .hidden { display: none; }
-#sector-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; }
-.modal-content { background: #2d2d2d; padding: 30px; border-radius: 15px; text-align: center; border: 1px solid #3f51b5; }
+
+/* Modal Stili */
+#sector-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.wiki-modal { border: 1px solid #a2a9b1; background: #f8f9fa; padding: 2em; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
