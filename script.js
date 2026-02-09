@@ -1,54 +1,79 @@
 let balance = 100;
+let initialBalance = 100;
+let portfolio = {}; // Hangi hisseden kaç tane var?
 let stocks = [
-    { name: "TEKNO", price: 20, lastPrice: 20 },
-    { name: "ENERJİ", price: 35, lastPrice: 35 },
-    { name: "GIDA", price: 10, lastPrice: 10 },
-    { name: "SAĞLIK", price: 50, lastPrice: 50 },
-    { name: "ULAŞIM", price: 15, lastPrice: 15 }
+    { name: "APPLE", price: 150, last: 150 },
+    { name: "TESLA", price: 200, last: 200 },
+    { name: "BITCOIN", price: 50, last: 50 },
+    { name: "GOLD", price: 180, last: 180 },
+    { name: "OIL", price: 80, last: 80 }
 ];
 
 function updateMarket() {
     const list = document.getElementById('stocks-list');
     list.innerHTML = "";
+    let totalPortfolioVal = 0;
 
-    stocks.forEach(stock => {
-        // Rastgele fiyat değişimi
-        stock.lastPrice = stock.price;
-        let change = (Math.random() * 4 - 2); // -2$ ile +2$ arası
-        stock.price = Math.max(1, stock.price + change);
+    stocks.forEach(s => {
+        s.last = s.price;
+        s.price += (Math.random() * 10 - 5); // Daha agresif dalgalanma
+        if(s.price < 1) s.price = 1;
+
+        // Sahip olunan hisse değerini hesapla
+        if(portfolio[s.name]) {
+            totalPortfolioVal += portfolio[s.name] * s.price;
+        }
 
         const div = document.createElement('div');
         div.className = 'stock-item';
-        const trendClass = stock.price >= stock.lastPrice ? 'price-up' : 'price-down';
+        const color = s.price >= s.last ? '#4caf50' : '#f44336';
         
         div.innerHTML = `
-            <span>${stock.name}</span>
-            <span class="${trendClass}">${stock.price.toFixed(2)} $</span>
-            <button style="width:50px" onclick="buyStock('${stock.name}', ${stock.price})">Al</button>
+            <div class="stock-info">
+                <span class="stock-name">${s.name}</span>
+                <span style="font-size:0.7rem">Sende: ${portfolio[s.name] || 0} adet</span>
+            </div>
+            <span class="stock-price" style="color:${color}">${s.price.toFixed(2)} $</span>
+            <button onclick="buyStock('${s.name}', ${s.price})" style="background:#444; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer">AL</button>
         `;
         list.appendChild(div);
     });
+
+    // Verileri Güncelle
+    document.getElementById('portfolio-val').innerText = totalPortfolioVal.toFixed(2);
+    let totalWealth = balance + totalPortfolioVal;
+    let pl = ((totalWealth - initialBalance) / initialBalance) * 100;
+    const plEl = document.getElementById('profit-loss');
+    plEl.innerText = pl.toFixed(2);
+    plEl.style.color = pl >= 0 ? '#4caf50' : '#f44336';
 }
 
 function buyStock(name, price) {
     if (balance >= price) {
         balance -= price;
-        document.getElementById('balance').innerText = balance.toFixed(2);
-        alert(`${name} hissesi alındı!`);
+        portfolio[name] = (portfolio[name] || 0) + 1;
+        updateUI();
     } else {
-        alert("Yetersiz bakiye!");
+        alert("Yetersiz Nakit!");
     }
 }
 
-function cashOut() {
-    document.getElementById('sector-modal').classList.remove('hidden');
+function withdrawCash() {
+    let amt = parseFloat(document.getElementById('withdraw-amount').value);
+    if (amt > 0 && amt <= balance) {
+        // Belirlediğin tutarı "çekmiş" oluyorsun, sektör seçimi açılıyor
+        alert(`${amt}$ nakit ayrıldı. Sektör seçebilirsin!`);
+        document.getElementById('sector-overlay').classList.remove('hidden');
+    } else {
+        alert("Geçersiz tutar! Bakiyenizi kontrol edin.");
+    }
 }
 
-function selectSector(sector) {
-    alert(`${sector} sektörü seçildi! Artık bu alanda uzmanlaşacaksın.`);
-    document.getElementById('sector-modal').classList.add('hidden');
-    // Burada yeni sektöre özel level yüklenecek
+function updateUI() {
+    document.getElementById('balance').innerText = balance.toFixed(2);
 }
 
-setInterval(updateMarket, 2000); // 2 saniyede bir borsa güncellenir
+function closeModal() { document.getElementById('sector-overlay').classList.add('hidden'); }
+
+setInterval(updateMarket, 2000);
 updateMarket();
