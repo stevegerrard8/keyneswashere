@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Global_Asset_Management_Terminal_v5</title>
+    <title>Global_Asset_Management_Terminal_v5.1</title>
     <style>
         /* GÜVENLİ SİYAH İMLEÇ */
         html, body, a, button, [onclick] { cursor: crosshair !important; }
@@ -18,7 +18,7 @@
         }
 
         .main-wrapper {
-            display: flex; height: calc(100vh - 40px); padding: 10px; gap: 10px; box-sizing: border-box;
+            display: flex; height: calc(100vh - 140px); padding: 10px; gap: 10px; box-sizing: border-box;
         }
 
         .column {
@@ -47,6 +47,12 @@
         .profit { color: #008000; font-weight: bold; }
         .loss { color: #d33; font-weight: bold; }
 
+        /* TERMINAL LOG ALANI */
+        #system-terminal {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 115px;
+            border-top: 2px solid #333; z-index: 100; background: #000;
+        }
+
         /* ANIMASYONLAR */
         @keyframes flash-green { 0% { background: #d4edda; } 100% { background: transparent; } }
         @keyframes flash-red { 0% { background: #f8d7da; } 100% { background: transparent; } }
@@ -61,7 +67,7 @@
     </style>
 </head>
 <body>
-    <div id="mw-header">Terminal_Global_v5.0_FINAL | <span id="clock">00:00</span></div>
+    <div id="mw-header">Terminal_v5.1_AUDIT_LOG | <span id="clock">00:00</span></div>
     
     <div class="main-wrapper">
         <div class="column col-large">
@@ -85,25 +91,35 @@
         <div class="column">
             <h1>Global Varlık Portföyü</h1>
             <div class="rent-box">
-                <b>Biriken Kira Havuzu:</b> <span id="pending-rent" class="profit">0.00</span> $<br>
-                <a onclick="collectRent()">[TAHSİLAT YAP VE NAKDE AKTAR]</a>
+                <b>Kira Havuzu:</b> <span id="pending-rent" class="profit">0.00</span> $<br>
+                <a onclick="collectRent()">[TAHSİLAT YAP]</a>
             </div>
             <div class="section">
                 <h3>Mülk Envanteri</h3>
-                <div class="scroll-area"><table class="wiki-table"><thead><tr><th>Varlık</th><th>Adet</th><th>Getiri/s</th></tr></thead><tbody id="asset-stats-body"></tbody></table></div>
+                <div class="scroll-area"><table class="wiki-table"><thead><tr><th>Varlık</th><th>Adet</th><th>Gelir/s</th></tr></thead><tbody id="asset-stats-body"></tbody></table></div>
             </div>
-            <div class="section"><h3>Varlık Alım (Real Estate)</h3><div class="scroll-area" id="asset-shop"></div></div>
+            <div class="section"><h3>Emlak Borsası</h3><div class="scroll-area" id="asset-shop"></div></div>
         </div>
 
         <div class="column" style="flex: 0.9;">
-            <h1>İnsan Kaynakları & Danışmanlık</h1>
-            <div class="section"><h3>Broker & Uzman Alımı</h3><div class="scroll-area" id="broker-shop"></div></div>
+            <h1>İK & Danışmanlık</h1>
+            <div class="section"><h3>Broker Alımı</h3><div class="scroll-area" id="broker-shop"></div></div>
             <div class="section" style="flex: 0.4;">
                 <h3>Aktif Kadro</h3>
                 <div class="scroll-area"><ul id="active-brokers-list" style="font-size: 11px; padding: 10px; margin: 0; list-style: none;"></ul></div>
             </div>
         </div>
     </div>
+
+    <div id="system-terminal">
+        <div style="background: #333; color: #fff; padding: 2px 10px; font-size: 11px; font-weight: bold;">
+            SYSTEM_LOG > AUDIT_TRAIL_ACTIVE
+        </div>
+        <div id="log-container" style="height: 90px; overflow-y: auto; padding: 5px; font-family: 'Courier New', monospace; font-size: 11px; color: #00ff00; background: #000;">
+            > Terminal initialized... [OK]
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
