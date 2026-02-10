@@ -4,27 +4,32 @@
     <meta charset="UTF-8">
     <title>Global_Asset_Management_Terminal</title>
     <style>
-        /* DIŞ BAĞLANTI GEREKTİRMEYEN GÖMÜLÜ SİYAH MOUSE İMLECİ */
+        /* GÜVENLİ VE HATA VERMEYEN SİYAH İMLEÇ */
         html, body, a, button, [onclick] { 
-            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gMREh0XBg69XwAAAZ5JREFUWMPF179LW1EUBvDveS9pS9SAtSCo6GCh0Iid7CIdnIuDNC6tS8Glf4S7S7vYwdm9S8Glf0S7S8Glf7S7i0NxcXByKCiYp8M9vBySxkSba7u+uX7nu8ePc899XAnGGMPhf7mNMcYIIfre3xNC9P2NlVL9LIDBYNB7vN4YIYTIn7S7u9tXSkkpZSaAruu63vOfv0vT9KcAms1m97W7u5sKoNvt9l273e67RqPR9/vYsqyeUqpXN8ayLAA913Xf+0vT9LceGGMAsOfXp+6e9SOnNsaYfL5vA7DneZ4pYwyAnue5NsaYMv8HwNqMMfEAbdu2T06pYRiGFm3f92N7vu9r0fb9vjWllI4pY4z5G8AwDCO7ruuGaZqGvud5RrbneZ625/ueFm3f9yPLsqSMMf8DMMYgTVPHn/yq/4G/AIZh6Hl+9D8Az/P0PN80TWNsjPH0PN80TdOYGGMMTdMYTdOYGGMMTf8fAK80Tf8HMMYgTdMAsOfvW0opnVJKSikzAeS6ruv6fSullI4pY8yfAHTXdV0/H6fU6fT/9U8C7u3vY6/7/6sD/gbwX/sD/pL5pAAAAABJRU5ErkJggg=='), default !important;
+            cursor: crosshair !important; 
         }
 
         html, body { 
             height: 100%; margin: 0; padding: 0; overflow: hidden; 
             background: #fff; color: #000; font-family: "Times New Roman", Times, serif; 
         }
+
         #mw-header { 
             background: #f6f6f6; border-bottom: 1px solid #a2a9b1; 
             padding: 5px 20px; font-size: 13px; text-align: right; height: 25px;
         }
+
         .main-wrapper {
             display: flex; height: calc(100vh - 40px); padding: 10px; gap: 10px; box-sizing: border-box;
         }
+
         .column {
             display: flex; flex-direction: column; flex: 1; 
             border: 1px solid #a2a9b1; background: #fff; overflow: hidden;
         }
+
         .col-large { flex: 1.4; }
+        
         h1 { font-size: 18px; border-bottom: 2px solid #333; margin: 0; padding: 5px; background: #eee; }
         h3 { font-size: 14px; margin: 0; padding: 5px; background: #eaecf0; border-bottom: 1px solid #a2a9b1; }
 
@@ -40,7 +45,7 @@
         .shop-item:hover { background: #f0f7ff; }
         .rent-box { background: #eef9ff; padding: 10px; border-bottom: 1px solid #a2a9b1; }
 
-        a { color: #0645ad; text-decoration: none; cursor: inherit; font-weight: bold; }
+        a { color: #0645ad; text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
         .profit { color: #008000; font-weight: bold; }
         .loss { color: #d33; font-weight: bold; }
@@ -50,7 +55,7 @@
     </style>
 </head>
 <body>
-    <div id="mw-header">Terminal_Global_v4.2 | <span id="clock">00:00</span></div>
+    <div id="mw-header">Terminal_Global_v4.5 | <span id="clock">00:00</span></div>
     
     <div class="main-wrapper">
         <div class="column col-large">
@@ -107,6 +112,7 @@
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
