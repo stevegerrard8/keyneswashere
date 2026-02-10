@@ -1,93 +1,83 @@
-let balance = 1000.00; // Başlangıç parası biraz artırıldı
+let balance = 100.00;
 let intellect = 1.0000;
 let pendingRent = 0.00;
 let portfolio = {}; 
 let activeBrokers = [];
-let ownedAssets = {}; // Artık dinamik, mülk alana kadar boş.
+let ownedAssets = {};
 
-// 50 Hisse
-const stockPrefixes = ['USA', 'UK', 'TR', 'GER', 'JPN', 'FR', 'CHN', 'RU', 'IND', 'BRZ'];
+const stockPrefixes = ['XAU', 'UST', 'JPY', 'GER', 'EURE', 'AAPL', 'NVDA', 'TSLA', 'AMZN', 'BTC'];
 const market = Array.from({ length: 50 }, (_, i) => ({
-    id: stockPrefixes[i % 10] + (100 + i),
-    price: Math.floor(Math.random() * 500) + 20
+    id: stockPrefixes[i % 10] + (200 + i),
+    price: Math.floor(Math.random() * 500) + 50,
+    oldPrice: 0
 }));
 
-// ÇOK DAHA FAZLA MÜLK (20+ Mülk)
 const assetShop = [
-    {id: 'a1', name: 'Arsa - Türkiye / Sakarya', price: 500, rent: 0.5},
-    {id: 'a2', name: 'Apartman Dairesi - Londra / Soho', price: 4500, rent: 4.5},
-    {id: 'a3', name: 'Dükkan - İstanbul / Nişantaşı', price: 8000, rent: 9.0},
-    {id: 'a4', name: 'Villa - Miami / Beach Front', price: 15000, rent: 20.0},
-    {id: 'a5', name: 'Çekici Filosu - Almanya', price: 2500, rent: 3.0},
-    {id: 'a6', name: 'Bağ Evi - İtalya / Toskana', price: 3200, rent: 3.8},
-    {id: 'a7', name: 'Rezidans - Dubai / Downtown', price: 12000, rent: 15.5},
-    {id: 'a8', name: 'Ofis Katı - New York / Wall St.', price: 25000, rent: 35.0},
-    {id: 'a9', name: 'Fabrika - Çin / Şangay', price: 50000, rent: 80.0},
-    {id: 'a10', name: 'Lojistik Depo - Hollanda', price: 18000, rent: 22.0},
-    {id: 'a11', name: 'Otoban Dinlenme Tesisi - TR', price: 11000, rent: 14.0},
-    {id: 'a12', name: 'Maden Ocağı - Avustralya', price: 100000, rent: 250.0},
-    {id: 'a13', name: 'Otel - İspanya / Ibiza', price: 75000, rent: 180.0},
-    {id: 'a14', name: 'Yat Limanı - Yunanistan / Mykonos', price: 150000, rent: 400.0}
+    {id: 'a1', name: 'Arsa - Türkiye', price: 500, rent: 0.5},
+    {id: 'a2', name: 'Daire - Londra', price: 4500, rent: 4.5},
+    {id: 'a3', name: 'Mağaza - İstanbul', price: 9000, rent: 10.0},
+    {id: 'a4', name: 'Villa - Miami', price: 25000, rent: 30.0},
+    {id: 'a5', name: 'Lojistik Merkezi', price: 75000, rent: 100.0}
 ];
 
-// GERÇEKÇİ DANIŞMAN LİSTESİ (15+ Uzman)
 const brokers = [
-    {id: 'b1', name: 'Stajyer Analist', price: 200, boost: 0.0004},
-    {id: 'b2', name: 'Junior Portföy Yöneticisi', price: 1000, boost: 0.0015},
-    {id: 'b3', name: 'Kıdemli Borsa Brokerı', price: 3500, boost: 0.0045},
-    {id: 'b4', name: 'Gayrimenkul Yatırım Uzmanı', price: 5000, boost: 0.0070},
-    {id: 'b5', name: 'Baş Ekonomist', price: 12000, boost: 0.0150},
-    {id: 'b6', name: 'Algoritmik Trade Yazılımcısı', price: 25000, boost: 0.0400},
-    {id: 'b7', name: 'Fon Yönetim Başkanı (CEO)', price: 75000, boost: 0.1200},
-    {id: 'b8', name: 'Hedge Fund Stratejisti', price: 150000, boost: 0.3500},
-    {id: 'b9', name: 'Yapay Zeka (Quant AI v4.0)', price: 500000, boost: 1.2000}
+    {id: 'b1', name: 'Stajyer Analist', price: 200, boost: 0.0005},
+    {id: 'b2', name: 'Portföy Yöneticisi', price: 1500, boost: 0.0020},
+    {id: 'b3', name: 'Kıdemli Broker', price: 5000, boost: 0.0070},
+    {id: 'b4', name: 'Yapay Zeka Botu', price: 20000, boost: 0.0300}
 ];
 
 function updateUI() {
     let pVal = 0;
+    
+    // Borsa Güncelleme ve Animasyon
+    const mBody = document.getElementById('market-body');
+    mBody.innerHTML = market.map(s => {
+        let change = (Math.random() * 4 - 2 + ((intellect - 1) * 0.1));
+        s.oldPrice = s.price;
+        s.price += change;
+        if(s.price < 1) s.price = 1;
+        
+        let flashClass = s.price > s.oldPrice ? 'up-flash' : 'down-flash';
+        return `<tr><td><b>${s.id}</b></td><td class="${flashClass} ${s.price >= s.oldPrice ? 'profit' : 'loss'}">${s.price.toFixed(2)}</td><td><a onclick="executeBuy('${s.id}', ${s.price})">[AL]</a></td></tr>`;
+    }).join("");
+
+    // Portföy
     const pBody = document.getElementById('portfolio-body');
     pBody.innerHTML = "";
     Object.keys(portfolio).forEach(id => {
         if(portfolio[id].qty > 0) {
             const s = market.find(x => x.id === id);
-            let val = portfolio[id].qty * s.price;
-            let profit = val - (portfolio[id].qty * portfolio[id].avgCost);
-            pVal += val;
-            pBody.innerHTML += `<tr><td>${id}</td><td>${portfolio[id].qty}</td><td class="${profit>=0?'profit':'loss'}">${profit.toFixed(2)}</td><td><a onclick="executeSell('${id}', ${s.price})">[S]</a></td></tr>`;
+            let currentVal = portfolio[id].qty * s.price;
+            let profit = currentVal - (portfolio[id].qty * portfolio[id].avgCost);
+            pVal += currentVal;
+            pBody.innerHTML += `<tr><td>${id}</td><td>${portfolio[id].qty}</td><td class="${profit>=0?'profit':'loss'}">${profit.toFixed(2)}</td><td><a onclick="executeSell('${id}', ${s.price})">[SAT]</a></td></tr>`;
         }
     });
 
-    const mBody = document.getElementById('market-body');
-    mBody.innerHTML = "";
-    market.forEach(s => {
-        s.price += (Math.random() * 2 - 1); 
-        if(s.price < 0.1) s.price = 0.1;
-        mBody.innerHTML += `<tr><td><b>${s.id}</b></td><td>${s.price.toFixed(2)} $</td><td><a onclick="executeBuy('${s.id}', ${s.price})">[AL]</a></td></tr>`;
-    });
-
-    document.getElementById('broker-shop').innerHTML = brokers.map(b => `<div class="shop-item"><b>${b.name}</b> (${b.price}$)<br><a onclick="buyBroker('${b.id}')">[İşe Al]</a></div>`).join("");
-    document.getElementById('asset-shop').innerHTML = assetShop.map(a => `<div class="shop-item"><b>${a.name}</b> (${a.price}$)<br>Getiri: ${a.rent}$/s <a onclick="buyAsset('${a.id}')">[Satın Al]</a></div>`).join("");
-
-    // Sadece sahip olunan mülkleri listele (Kural 1)
-    const assetStats = document.getElementById('asset-stats-body');
-    assetStats.innerHTML = "";
-    Object.keys(ownedAssets).forEach(key => {
+    // Mülk & Broker Marketleri (Sadece İlk Kez veya Değişimde)
+    document.getElementById('asset-shop').innerHTML = assetShop.map(a => `<div class="shop-item"><b>${a.name}</b> (${a.price}$)<br>Kira: ${a.rent}$/s | <a onclick="buyAsset('${a.id}')">[SATIN AL]</a></div>`).join("");
+    document.getElementById('broker-shop').innerHTML = brokers.map(b => `<div class="shop-item"><b>${b.name}</b> (${b.price}$)<br>Zeka: +${(b.boost*100).toFixed(3)} | <a onclick="buyBroker('${b.id}')">[İŞE AL]</a></div>`).join("");
+    
+    // Mülk Envanteri
+    document.getElementById('asset-stats-body').innerHTML = Object.keys(ownedAssets).map(key => {
         let def = assetShop.find(x => x.id === key);
-        assetStats.innerHTML += `<tr><td>${def.name}</td><td>${ownedAssets[key]}</td><td>${(ownedAssets[key] * def.rent).toFixed(1)} $</td></tr>`;
-    });
+        return `<tr><td>${def.name}</td><td>${ownedAssets[key]}</td><td>${(ownedAssets[key] * def.rent).toFixed(1)}</td></tr>`;
+    }).join("");
 
-    document.getElementById('active-brokers-list').innerHTML = activeBrokers.map(b => `<li>• ${b.name}</li>`).join("");
+    // Aktif Kadro
+    document.getElementById('active-brokers-list').innerHTML = activeBrokers.map(b => `<li>• ${b.name} (+${(b.boost*100).toFixed(3)})</li>`).join("");
+
+    // Statlar
     document.getElementById('balance').innerText = balance.toLocaleString(undefined, {minimumFractionDigits: 2});
     document.getElementById('port-val').innerText = pVal.toLocaleString(undefined, {minimumFractionDigits: 2});
     document.getElementById('total-net').innerText = (balance + pVal).toLocaleString(undefined, {minimumFractionDigits: 2});
     document.getElementById('pending-rent').innerText = pendingRent.toFixed(2);
     document.getElementById('intellect').innerText = intellect.toFixed(4);
-    
-    const now = new Date();
-    document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0');
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
 }
 
-function processPassive() {
+function process() {
     Object.keys(ownedAssets).forEach(key => {
         let assetDef = assetShop.find(x => x.id === key);
         pendingRent += (ownedAssets[key] * assetDef.rent);
@@ -97,27 +87,26 @@ function processPassive() {
 }
 
 function collectRent() {
-    balance += pendingRent;
-    pendingRent = 0;
-    updateUI();
+    if(pendingRent > 0) {
+        balance += pendingRent;
+        pendingRent = 0;
+        // Para artış animasyonunu tetikle
+        const el = document.getElementById('balance');
+        el.classList.remove('money-anim');
+        void el.offsetWidth;
+        el.classList.add('money-anim');
+        updateUI();
+    }
 }
 
 function buyAsset(id) {
-    let asset = assetShop.find(x => x.id === id);
-    if(balance >= asset.price) {
-        balance -= asset.price;
-        ownedAssets[id] = (ownedAssets[id] || 0) + 1;
-        updateUI();
-    }
+    let a = assetShop.find(x => x.id === id);
+    if(balance >= a.price) { balance -= a.price; ownedAssets[id] = (ownedAssets[id] || 0) + 1; updateUI(); }
 }
 
 function buyBroker(id) {
     let b = brokers.find(x => x.id === id);
-    if(balance >= b.price) {
-        balance -= b.price;
-        activeBrokers.push(b);
-        updateUI();
-    }
+    if(balance >= b.price) { balance -= b.price; activeBrokers.push(b); updateUI(); }
 }
 
 function executeBuy(id, price) {
@@ -131,12 +120,8 @@ function executeBuy(id, price) {
 }
 
 function executeSell(id, price) {
-    if(portfolio[id]?.qty > 0) {
-        balance += price;
-        portfolio[id].qty--;
-        updateUI();
-    }
+    if(portfolio[id]?.qty > 0) { balance += price; portfolio[id].qty--; updateUI(); }
 }
 
-setInterval(processPassive, 1000);
+setInterval(process, 1000);
 updateUI();
