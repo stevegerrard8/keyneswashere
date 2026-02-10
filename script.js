@@ -1,4 +1,4 @@
-let balance = 100.00;
+let balance = 1000.00;
 let intellect = 1.0000;
 let pendingRent = 0.00;
 let portfolio = {}; 
