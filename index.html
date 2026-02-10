@@ -2,12 +2,10 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Global_Asset_Management_Terminal</title>
+    <title>Global_Asset_Management_Terminal_v5</title>
     <style>
-        /* GÜVENLİ VE HATA VERMEYEN SİYAH İMLEÇ */
-        html, body, a, button, [onclick] { 
-            cursor: crosshair !important; 
-        }
+        /* GÜVENLİ SİYAH İMLEÇ */
+        html, body, a, button, [onclick] { cursor: crosshair !important; }
 
         html, body { 
             height: 100%; margin: 0; padding: 0; overflow: hidden; 
@@ -29,7 +27,6 @@
         }
 
         .col-large { flex: 1.4; }
-        
         h1 { font-size: 18px; border-bottom: 2px solid #333; margin: 0; padding: 5px; background: #eee; }
         h3 { font-size: 14px; margin: 0; padding: 5px; background: #eaecf0; border-bottom: 1px solid #a2a9b1; }
 
@@ -38,7 +35,7 @@
 
         .wiki-table { width: 100%; border-collapse: collapse; font-size: 12px; }
         .wiki-table th { position: sticky; top: 0; background: #f8f9fa; border-bottom: 2px solid #a2a9b1; padding: 5px; text-align: left; z-index: 1; }
-        .wiki-table td { border-bottom: 1px solid #eee; padding: 5px; }
+        .wiki-table td { border-bottom: 1px solid #eee; padding: 5px; transition: background 0.4s; }
         
         .status-box { padding: 10px; background: #f9f9f9; border-bottom: 1px solid #a2a9b1; font-size: 13px; line-height: 1.6; }
         .shop-item { padding: 8px; border-bottom: 1px solid #eee; font-size: 12px; transition: background 0.2s; }
@@ -50,18 +47,27 @@
         .profit { color: #008000; font-weight: bold; }
         .loss { color: #d33; font-weight: bold; }
 
+        /* ANIMASYONLAR */
+        @keyframes flash-green { 0% { background: #d4edda; } 100% { background: transparent; } }
+        @keyframes flash-red { 0% { background: #f8d7da; } 100% { background: transparent; } }
+        @keyframes pulse-money { 0% { transform: scale(1); } 50% { transform: scale(1.1); color: #0645ad; } 100% { transform: scale(1); } }
+
+        .up-flash { animation: flash-green 0.6s ease-out; }
+        .down-flash { animation: flash-red 0.6s ease-out; }
+        .money-anim { display: inline-block; animation: pulse-money 0.4s ease-in-out; }
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div id="mw-header">Terminal_Global_v4.5 | <span id="clock">00:00</span></div>
+    <div id="mw-header">Terminal_Global_v5.0_FINAL | <span id="clock">00:00</span></div>
     
     <div class="main-wrapper">
         <div class="column col-large">
             <h1>Finansal Veri Merkezi</h1>
             <div class="status-box">
-                <b>Nakit:</b> <span id="balance">100.00</span> $ | <b>Portföy:</b> <span id="port-val">0.00</span> $<br>
+                <b>Nakit:</b> <span id="balance-container"><span id="balance">100.00</span></span> $ | <b>Portföy:</b> <span id="port-val">0.00</span> $<br>
                 <b>Net Değer:</b> <u><span id="total-net">100.00</span> $</u> | <b>Y. Akılı:</b> %<span id="intellect">1.0000</span>
             </div>
             
@@ -82,37 +88,22 @@
                 <b>Biriken Kira Havuzu:</b> <span id="pending-rent" class="profit">0.00</span> $<br>
                 <a onclick="collectRent()">[TAHSİLAT YAP VE NAKDE AKTAR]</a>
             </div>
-
             <div class="section">
                 <h3>Mülk Envanteri</h3>
-                <div class="scroll-area">
-                    <table class="wiki-table">
-                        <thead><tr><th>Varlık Tipi / Lokasyon</th><th>Adet</th><th>Getiri/s</th></tr></thead>
-                        <tbody id="asset-stats-body"></tbody>
-                    </table>
-                </div>
+                <div class="scroll-area"><table class="wiki-table"><thead><tr><th>Varlık</th><th>Adet</th><th>Getiri/s</th></tr></thead><tbody id="asset-stats-body"></tbody></table></div>
             </div>
-
-            <div class="section">
-                <h3>Varlık Alım (Real Estate)</h3>
-                <div class="scroll-area" id="asset-shop"></div>
-            </div>
+            <div class="section"><h3>Varlık Alım (Real Estate)</h3><div class="scroll-area" id="asset-shop"></div></div>
         </div>
 
         <div class="column" style="flex: 0.9;">
             <h1>İnsan Kaynakları & Danışmanlık</h1>
-            <div class="section">
-                <h3>Broker & Uzman Alımı</h3>
-                <div class="scroll-area" id="broker-shop"></div>
-            </div>
-
+            <div class="section"><h3>Broker & Uzman Alımı</h3><div class="scroll-area" id="broker-shop"></div></div>
             <div class="section" style="flex: 0.4;">
                 <h3>Aktif Kadro</h3>
                 <div class="scroll-area"><ul id="active-brokers-list" style="font-size: 11px; padding: 10px; margin: 0; list-style: none;"></ul></div>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
